@@ -8,8 +8,12 @@ use Laravel\Scout\Searchable;
 
 class Hotel extends Model
 {
-
     use HasFactory, Searchable;
+
+    protected $casts = [
+    'price' => 'float',
+];
+
     protected $fillable = [
         'name',
         'location',

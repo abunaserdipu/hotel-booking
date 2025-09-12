@@ -11,7 +11,7 @@ class HotelController extends Controller
     public function index()
     {
         $hotels = Hotel::all();
-        return Inertia::render('Admin/Hotels/Index', [
+        return Inertia::render('dashboard', [
             'hotels' => $hotels,
         ]);
     }
@@ -30,5 +30,13 @@ class HotelController extends Controller
         Hotel::create($validatedData);
 
         return redirect()->route('admin.hotels.index');
+    }
+
+    public function publicIndex()
+    {
+        $hotels = Hotel::all();
+        return Inertia::render('frontend/hotels/index', [
+            'hotels' => $hotels,
+        ]);
     }
 }
