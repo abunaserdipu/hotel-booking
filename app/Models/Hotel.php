@@ -26,6 +26,11 @@ class Hotel extends Model
         return $this->hasMany(Booking::class);
     }
 
+    public function hotel()
+    {
+        return $this->belongsTo(Hotel::class);
+    }
+
     public function toSearchableArray(): array
     {
         return [

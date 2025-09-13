@@ -37,7 +37,7 @@ class HotelController extends Controller
 
         Hotel::create($validatedData);
 
-        return redirect()->route('dashboard')->with('success', 'Hotel created successfully.');
+        return redirect()->route('admin.hotels.index')->with('success', 'Hotel created successfully.');
     }
 
     public function edit(Hotel $hotel)

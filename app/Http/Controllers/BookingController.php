@@ -39,6 +39,7 @@ class BookingController extends Controller
             'guest_name' => $validatedData['guest_name'],
             'guest_email' => $validatedData['guest_email'],
             'phone_number' => $validatedData['phone_number'],
+            'user_id' => auth()->id(), // will be NULL if guest, user ID if logged in
         ]);
 
         Mail::to($booking->guest_email)->send(new BookingConfirmationMail($booking));
