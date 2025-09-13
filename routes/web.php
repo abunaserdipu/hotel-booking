@@ -20,7 +20,7 @@ Route::middleware(['auth', 'can:isAdmin'])->group(function () {
     Route::delete('/admin/hotels/{hotel}', [HotelController::class, 'destroy'])->name('admin.hotels.destroy');
 
     // Booking management routes
-    Route::get('/admin/bookings', [BookingController::class, 'index'])->name('admin.bookings.index');
+    Route::get('/admin/bookings', [BookingController::class, 'index'])->name('bookings');
     Route::delete('/admin/bookings/{booking}', [BookingController::class, 'destroy'])->name('admin.bookings.destroy');
     // Route::get('dashboard', function () {
     //     return Inertia::render('dashboard');

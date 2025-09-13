@@ -19,7 +19,7 @@ interface DashboardProps {
     }[];
 }
 
-const breadcrumbs: BreadcrumbItem[] = [{ title: 'Dashboard', href: '/dashboard' }];
+const breadcrumbs: BreadcrumbItem[] = [{ title: 'Hotels', href: '/dashboard' }];
 
 export default function Dashboard({ auth, hotels }: DashboardProps) {
     return (

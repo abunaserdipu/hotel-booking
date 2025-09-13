@@ -7,12 +7,17 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
-import { dashboard } from '@/routes';
+import { bookings, dashboard } from '@/routes';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Hotels',
         href: dashboard(),
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Bookings',
+        href: bookings(),
         icon: LayoutGrid,
     },
 ];
@@ -50,7 +55,7 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
+                {/* <NavFooter items={footerNavItems} className="mt-auto" /> */}
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

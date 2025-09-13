@@ -59,6 +59,6 @@ class BookingController extends Controller
         // $this->authorize('delete', $booking);
         $booking->delete();
 
-        return redirect()->route('admin.bookings.index')->with('success', 'Booking deleted successfully.');
+        return redirect()->route('bookings')->with('success', 'Booking deleted successfully.');
     }
 }

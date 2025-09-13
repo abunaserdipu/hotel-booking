@@ -1,8 +1,10 @@
 import AppLogoIcon from '@/components/app-logo-icon';
-import { Link } from '@inertiajs/react';
+import { SharedData } from '@/types';
+import { Link, usePage } from '@inertiajs/react';
 import { PropsWithChildren } from 'react';
 
 export default function Guest({ children }: PropsWithChildren) {
+    const { auth } = usePage<SharedData>().props;
     return (
         <div className="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0 dark:bg-gray-900">
             <div className="mx-auto flex w-full max-w-7xl justify-between px-4 py-4 sm:px-6 lg:px-8">
@@ -12,12 +14,20 @@ export default function Guest({ children }: PropsWithChildren) {
                     </Link>
                 </div>
                 <div className="flex items-center space-x-4">
-                    <Link href='login' className="text-sm text-gray-700 hover:underline dark:text-gray-500">
-                        Log in
-                    </Link>
-                    <Link href={`register`} className="text-sm text-gray-700 hover:underline dark:text-gray-500">
-                        Register
-                    </Link>
+                    {auth.user ? (
+                        <Link href="/dashboard" className="text-sm text-gray-700 hover:underline dark:text-gray-500">
+                            Dashboard
+                        </Link>
+                    ) : (
+                        <>
+                            <Link href="/login" className="text-sm text-gray-700 hover:underline dark:text-gray-500">
+                                Log in
+                            </Link>
+                            <Link href={`/register`} className="text-sm text-gray-700 hover:underline dark:text-gray-500">
+                                Register
+                            </Link>
+                        </>
+                    )}
                 </div>
             </div>
             <div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-screen sm:rounded-lg dark:bg-gray-800">{children}</div>
