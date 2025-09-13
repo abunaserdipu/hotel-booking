@@ -12,4 +12,9 @@ class Booking extends Model
         'guest_email',
         'phone_number'
     ];
+
+    public function hotel()
+    {
+        return $this->belongsTo(Hotel::class);
+    }
 }

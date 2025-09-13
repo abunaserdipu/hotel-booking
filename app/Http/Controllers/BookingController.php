@@ -35,7 +35,7 @@ class BookingController extends Controller
     public function show($reference)
     {
         $booking = Booking::with('hotel')->where('booking_reference', $reference)->firstOrFail();
-        return Inertia::render('BookingDetails', [
+        return Inertia::render('bookingDetails', [
             'booking' => $booking,
         ]);
     }

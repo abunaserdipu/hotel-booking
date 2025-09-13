@@ -1,7 +1,9 @@
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import GuestLayout from '@/layouts/guest-layout';
 import { Head, useForm } from '@inertiajs/react';
 
-// Define hotel type
 interface Hotel {
     id: number;
     name: string;
@@ -10,7 +12,6 @@ interface Hotel {
     price: number | string;
 }
 
-// Define props type
 interface HotelShowProps {
     hotel: Hotel;
 }
@@ -24,7 +25,7 @@ export default function HotelShow({ hotel }: HotelShowProps) {
 
     const submit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        post(`/bookings/${hotel.id}`);
+        post(`/hotels/${hotel.id}/book`);
     };
 
     return (
@@ -41,10 +42,10 @@ export default function HotelShow({ hotel }: HotelShowProps) {
                             <h2 className="mb-4 text-2xl font-semibold">Book this hotel</h2>
                             <form onSubmit={submit}>
                                 <div className="mb-4">
-                                    <label htmlFor="guest_name" className="block text-gray-700">
+                                    <Label htmlFor="guest_name" className="block text-gray-700">
                                         Full Name
-                                    </label>
-                                    <input
+                                    </Label>
+                                    <Input
                                         id="guest_name"
                                         type="text"
                                         className="mt-1 block w-full rounded-md shadow-sm"
@@ -54,14 +55,44 @@ export default function HotelShow({ hotel }: HotelShowProps) {
                                     />
                                     {errors.guest_name && <div className="mt-1 text-sm text-red-500">{errors.guest_name}</div>}
                                 </div>
-                                {/* Add other input fields for guest_email and phone_number */}
-                                <button
+
+                                <div className="mb-4">
+                                    <Label htmlFor="guest_email" className="block text-gray-700">
+                                        Vaild Email
+                                    </Label>
+                                    <Input
+                                        id="guest_email"
+                                        type="email"
+                                        className="mt-1 block w-full rounded-md shadow-sm"
+                                        value={data.guest_email}
+                                        onChange={(e) => setData('guest_email', e.target.value)}
+                                        required
+                                    />
+                                    {errors.guest_email && <div className="mt-1 text-sm text-red-500">{errors.guest_email}</div>}
+                                </div>
+
+                                <div className="mb-4">
+                                    <Label htmlFor="phone_number" className="block text-gray-700">
+                                        Phone Number
+                                    </Label>
+                                    <Input
+                                        id="phone_number"
+                                        type="tel"
+                                        className="mt-1 block w-full rounded-md shadow-sm"
+                                        value={data.phone_number}
+                                        onChange={(e) => setData('phone_number', e.target.value)}
+                                        required
+                                    />
+                                    {errors.phone_number && <div className="mt-1 text-sm text-red-500">{errors.phone_number}</div>}
+                                </div>
+
+                                <Button
                                     type="submit"
                                     disabled={processing}
                                     className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
                                 >
                                     Book Now
-                                </button>
+                                </Button>
                             </form>
                         </div>
                     </div>

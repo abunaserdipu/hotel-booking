@@ -11,8 +11,8 @@ class Hotel extends Model
     use HasFactory;
 
     protected $casts = [
-    'price' => 'float',
-];
+        'price' => 'float',
+    ];
 
     protected $fillable = [
         'name',
@@ -20,6 +20,11 @@ class Hotel extends Model
         'description',
         'price'
     ];
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 
     // public function toSearchableArray(): array
     // {
