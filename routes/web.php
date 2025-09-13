@@ -18,6 +18,10 @@ Route::middleware(['auth', 'can:isAdmin'])->group(function () {
     Route::get('/admin/hotels/{hotel}/edit', [HotelController::class, 'edit'])->name('admin.hotels.edit');
     Route::put('/admin/hotels/{hotel}', [HotelController::class, 'update'])->name('admin.hotels.update');
     Route::delete('/admin/hotels/{hotel}', [HotelController::class, 'destroy'])->name('admin.hotels.destroy');
+
+    // Booking management routes
+    Route::get('/admin/bookings', [BookingController::class, 'index'])->name('admin.bookings.index');
+    Route::delete('/admin/bookings/{booking}', [BookingController::class, 'destroy'])->name('admin.bookings.destroy');
     // Route::get('dashboard', function () {
     //     return Inertia::render('dashboard');
     // })->name('dashboard');
