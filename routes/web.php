@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\HotelController;
+use App\Http\Controllers\SearchController;
 use App\Models\Hotel;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,6 +33,8 @@ Route::get('/hotels/{hotel}', function (Hotel $hotel) {
 })->name('hotels.show');
 Route::post('/hotels/{hotel}/book', [BookingController::class, 'store'])->name('bookings.store');
 Route::get('/bookings/{reference}', [BookingController::class, 'show'])->name('booking.show');
+
+Route::get('/hotels', [SearchController::class, 'search'])->name('hotels.index');
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';

@@ -8,12 +8,17 @@ use Inertia\Inertia;
 
 class SearchController extends Controller
 {
-    public function index(Request $request)
+    public function search(Request $request)
     {
         $query = $request->input('query');
-        $hotels = Hotel::search($query)->get();
 
-        return Inertia::render('Hotels/Index', [
+        if ($query) {
+            $hotels = Hotel::search($query)->get();
+        } else {
+            $hotels = Hotel::all();
+        }
+
+        return Inertia::render('frontend/hotels/index', [
             'hotels' => $hotels,
         ]);
     }
