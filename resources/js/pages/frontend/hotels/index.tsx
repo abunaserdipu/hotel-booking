@@ -24,7 +24,6 @@ export default function PublicHotelsIndex({ hotels }: Props) {
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         get('/hotels', {
-            // Replace the route() helper with the actual URL
             preserveState: true,
             replace: true,
         });

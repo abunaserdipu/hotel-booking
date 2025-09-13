@@ -16,7 +16,7 @@ class BookingController extends Controller
     use AuthorizesRequests;
     public function index()
     {
-        // $this->authorize('viewAny', Booking::class);
+        $this->authorize('viewAny', Booking::class);
 
         // Eager load the related hotel to avoid N+1 query problems
         $bookings = Booking::with('hotel')->latest()->get();
@@ -57,7 +57,7 @@ class BookingController extends Controller
 
     public function destroy(Booking $booking)
     {
-        // $this->authorize('delete', $booking);
+        $this->authorize('delete', $booking);
         $booking->delete();
 
         return redirect()->route('bookings')->with('success', 'Booking deleted successfully.');
