@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Enums\BookingStatus;
+use App\Events\NewBookingCreated;
 use App\Mail\BookingConfirmationMail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
@@ -30,6 +31,9 @@ class FrontPaymentController extends Controller
 
         // Send confirmation email only after payment success
         Mail::to($booking->guest_email)->send(new BookingConfirmationMail($booking));
+
+        event(new NewBookingCreated($booking));
+        // logger()->info('NewBookingCreated event dispatched for booking: ' . $booking->id);
 
         return redirect()->route('booking.show', ['reference' => $booking->booking_reference]);
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Enums\BookingStatus;
+use App\Events\NewBookingCreated;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Hotel;
@@ -28,7 +29,6 @@ class FrontBookingController extends Controller
             'user_id' => auth()->id(), // will be NULL if guest, user_id if logged in
             'status' => BookingStatus::Pending,
         ]);
-
 
         return redirect()->route('payment.show', ['reference' => $booking->booking_reference]);
     }
