@@ -49,6 +49,7 @@ php artisan key:generate
 Edit your `.env` file with your database and Reverb configuration:
 
 ```env
+DB_CONNECTION=mysql
 DB_DATABASE=your_db_name
 DB_USERNAME=your_db_user
 DB_PASSWORD=your_db_password
@@ -94,45 +95,79 @@ php artisan migrate --seed
 
 ### 6️⃣ Start the Servers
 
-You’ll need **three separate terminals** for backend, frontend, and Reverb.
+You’ll need **two separate terminals** for Vite and Reverb.
 
-**Terminal 1 – Laravel Backend:**
+**Terminal 1 – Vite Frontend:**
+
 ```bash
-php artisan serve
+composer run dev
 ```
 
-**Terminal 2 – Vite Frontend:**
-```bash
-npm run dev
-```
+**Terminal 2 – Reverb WebSocket Server:**
 
-**Terminal 3 – Reverb WebSocket Server:**
 ```bash
 php artisan reverb:start
 ```
 
 ---
 
-## 💻 Features
+## 💻 Core Features
 
-### ✅ Core Features
+### 🏁 Project Foundation
 
-- **Hotel Booking System** – Search and book hotels.
-- **Booking Confirmation** – Dedicated confirmation page after successful booking/payment.
-- **Payment Flow** – Simulated payment system to confirm bookings.
-- **User Authentication** – Register, log in, and manage profiles.
-- **Admin Dashboard** – Overview of booking activity for administrators.
+- **Official Laravel React Starter Kit:**  
+  The project is built on the official Laravel React Starter Kit for a robust and modern foundation.
 
-### 🎉 Optional Features
+### 👥 User Roles & Authentication
 
-- **Real-Time Notifications (WIP)** – Admins receive instant toast notifications when a new booking is confirmed & paid, powered by Laravel Reverb.
-- **Multi-Currency Support** – Hotels have base prices in USD, with support for live currency conversion (e.g., EUR, GBP).
+- **Admin:**  
+  Access to a dashboard for hotel and booking management (CRUD operations).
+- **User:**  
+  Can browse hotels, make bookings, and manage their own bookings.
+- **Guest:**  
+  Can browse hotels and make bookings without creating an account.
+
+### 🔎 Hotel Search
+
+- **Powered by Elasticsearch via Laravel Scout:**  
+  Search hotels by name, location (city, country), and description for fast and relevant results.
+
+### 📝 Guest Booking
+
+- **No Registration Required:**  
+  Guests can complete bookings by providing essential details (name, email, phone).
+- **Booking Confirmation:**  
+  Guests receive a confirmation email with a booking reference and a unique link to access their booking.
+
+### 📱 Responsive Design
+
+- **Mobile & Desktop Ready:**  
+  Fully responsive UI using Tailwind CSS for a seamless experience on any device.
+
+### 🧑‍💻 Code Quality
+
+- **Best Practices:**
+    - Follows Laravel conventions (Eloquent, relationships, form requests, policies, seeders).
+    - Applies SOLID principles and design patterns (Service Classes, DTOs, Repository Pattern where appropriate).
+    - Clean, well-commented, and well-structured codebase.
+
+---
+
+## 🎉 Additional Features
+
+- **Multi-Currency Support:**  
+  Hotels have base prices in USD, with live currency conversion (e.g., EUR, GBP).
+- **Simulated Payment System:**  
+  Not a real-time payment—just a payment system simulation that leads you to a payment confirmation page.
+- **Real-Time Notifications (WIP):**  
+  Admins receive instant notifications for new bookings (powered by Laravel Reverb).
 
 ---
 
 ## ⚠️ Known Issues
 
-- **Real-Time Notifications (WIP):** Attempted implementation using **Laravel Reverb** to show real-time admin notifications on new bookings. Partially implemented; currently blocked by connection/auth issues.
+- **Real-Time Notifications (WIP):**  
+  Implementation using Laravel Reverb is in progress; currently blocked by connection/auth issues.
 
 ---
 
