@@ -5,6 +5,7 @@ interface Hotel {
     id: number;
     name: string;
     location: string;
+    price?: number;
 }
 
 interface Booking {
@@ -12,6 +13,7 @@ interface Booking {
     booking_reference: string;
     guest_name: string;
     guest_email: string;
+    status: string;
     hotel: Hotel;
 }
 
@@ -20,6 +22,11 @@ interface Props {
 }
 
 export default function BookingDetails({ booking }: Props) {
+    const statusColors: Record<string, string> = {
+        pending_payment: 'text-yellow-600 bg-yellow-100',
+        paid: 'text-green-600 bg-green-100',
+    };
+
     return (
         <GuestLayout>
             <Head title="Booking Confirmed" />
@@ -27,12 +34,26 @@ export default function BookingDetails({ booking }: Props) {
                 <div className="mx-auto max-w-2xl sm:px-6 lg:px-8">
                     <div className="rounded-lg bg-white p-6 text-center shadow-lg">
                         <h1 className="mb-4 text-3xl font-bold text-green-600">Booking Confirmed! 🎉</h1>
-                        <p className="mb-2 text-lg text-gray-800">Thank you for your booking, <strong>{booking.guest_name}</strong>!</p>
-                        <p className="mb-4 text-gray-600">A confirmation email has been sent to <strong>{booking.guest_email}</strong>.</p>
+                        <p className="mb-2 text-lg text-gray-800">
+                            Thank you for your booking, <strong>{booking.guest_name}</strong>!
+                        </p>
+                        <p className="mb-4 text-gray-600">
+                            A confirmation email has been sent to <strong>{booking.guest_email}</strong>.
+                        </p>
                         <div className="rounded-md bg-gray-100 p-4">
                             <h3 className="mb-2 text-xl font-semibold">Booking Reference</h3>
                             <p className="text-3xl font-bold text-indigo-600">{booking.booking_reference}</p>
                         </div>
+
+                        {/* Status Badge */}
+                        <div className="mt-6">
+                            <span
+                                className={`inline-block rounded px-3 py-1 text-sm font-medium ${statusColors[booking.status] || 'bg-gray-100 text-gray-600'}`}
+                            >
+                                {booking.status.replace('_', ' ')}
+                            </span>
+                        </div>
+
                         <div className="mt-6 text-left">
                             <h4 className="mb-2 text-lg font-semibold">Booking Details:</h4>
                             <p>
@@ -41,6 +62,11 @@ export default function BookingDetails({ booking }: Props) {
                             <p>
                                 <strong>Location:</strong> {booking.hotel.location}
                             </p>
+                            {booking.hotel.price && (
+                                <p>
+                                    <strong>Amount:</strong> ${booking.hotel.price}
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>

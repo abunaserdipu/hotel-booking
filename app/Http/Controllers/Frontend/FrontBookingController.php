@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Mail\BookingConfirmationMail;
+use App\Enums\BookingStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Hotel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -27,11 +26,11 @@ class FrontBookingController extends Controller
             'guest_email' => $validatedData['guest_email'],
             'phone_number' => $validatedData['phone_number'],
             'user_id' => auth()->id(), // will be NULL if guest, user_id if logged in
+            'status' => BookingStatus::Pending,
         ]);
 
-        Mail::to($booking->guest_email)->send(new BookingConfirmationMail($booking));
 
-        return redirect()->route('booking.show', ['reference' => $booking->booking_reference]);
+        return redirect()->route('payment.show', ['reference' => $booking->booking_reference]);
     }
 
     public function show($reference)

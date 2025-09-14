@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\Admin\HotelController;
 use App\Http\Controllers\Dashboard\User\UserBookingController;
 use App\Http\Controllers\Frontend\FrontBookingController;
 use App\Http\Controllers\Frontend\FrontHotelController;
+use App\Http\Controllers\Frontend\FrontPaymentController;
 use App\Http\Controllers\Frontend\SearchController;
 
 use App\Models\Hotel;
@@ -24,6 +25,9 @@ Route::get('/hotels/{hotel}', function (Hotel $hotel) {
 })->name('hotels.show');
 Route::post('/hotels/{hotel}/book', [FrontBookingController::class, 'store'])->name('bookings.store');
 Route::get('/bookings/{reference}', [FrontBookingController::class, 'show'])->name('booking.show');
+
+Route::get('/payment/{reference}', [FrontPaymentController::class, 'show'])->name('payment.show');
+Route::post('/payment/{reference}/confirm', [FrontPaymentController::class, 'confirm'])->name('payment.confirm');
 
 
 // User-specific routes
