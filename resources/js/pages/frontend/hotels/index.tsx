@@ -1,7 +1,7 @@
 import { Input } from '@/components/ui/input';
 import GuestLayout from '@/layouts/guest-layout';
-import { Head, Link, useForm } from '@inertiajs/react';
-import React from 'react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import React, { useState } from 'react';
 
 interface Hotel {
     id: number;
@@ -13,12 +13,47 @@ interface Hotel {
 
 interface Props {
     hotels: Hotel[];
+    exchangeRates: Record<string, number>;
+    selectedCurrency: string;
+    [key: string]: any;
 }
 
-export default function PublicHotelsIndex({ hotels }: Props) {
+export default function PublicHotelsIndex() {
+    const { props } = usePage<Props>();
+    // Corrected: Provide a default empty object for exchangeRates to prevent errors
+    const { hotels, exchangeRates = {}, selectedCurrency = 'USD' } = props;
+
     const { data, setData, get } = useForm({
         query: '',
     });
+
+    // Use state to manage the currently selected currency
+    const [currency, setCurrency] = useState(selectedCurrency);
+
+    // Get the currency symbol for display
+    const getCurrencySymbol = (currencyCode: string): string => {
+        switch (currencyCode) {
+            case 'USD':
+                return '$';
+            case 'EUR':
+                return '€';
+            case 'GBP':
+                return '£';
+            case 'JPY':
+                return '¥';
+            default:
+                return currencyCode;
+        }
+    };
+
+    // Function to calculate the converted price
+    const getConvertedPrice = (price: number): string => {
+        const basePriceInUSD = price;
+        const rate = exchangeRates[currency] || 1;
+        const convertedPrice = basePriceInUSD * rate;
+        const symbol = getCurrencySymbol(currency);
+        return `${symbol}${convertedPrice.toFixed(2)}`;
+    };
 
     // Handle search submission on input change
     const handleSearch = (e: React.FormEvent) => {
@@ -49,6 +84,25 @@ export default function PublicHotelsIndex({ hotels }: Props) {
                         </form>
                     </div>
 
+                    {/* Currency Selection Dropdown */}
+                    <div className="mb-6 flex justify-end">
+                        <label htmlFor="currency-select" className="mr-2 self-center font-medium text-gray-700">
+                            Display prices in:
+                        </label>
+                        <select
+                            id="currency-select"
+                            value={currency}
+                            onChange={(e) => setCurrency(e.target.value)}
+                            className="block w-auto rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none"
+                        >
+                            {Object.keys(exchangeRates).map((code) => (
+                                <option key={code} value={code}>
+                                    {code}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
                     {hotels.length > 0 ? (
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                             {hotels.map((hotel) => (
@@ -56,7 +110,7 @@ export default function PublicHotelsIndex({ hotels }: Props) {
                                     <div className="p-6">
                                         <h3 className="mb-2 text-xl font-bold">{hotel.name}</h3>
                                         <p className="mb-4 text-gray-600">{hotel.location}</p>
-                                        <p className="mb-2 text-lg font-semibold text-gray-800">${hotel.price.toFixed(2)}</p>
+                                        <p className="mb-2 text-lg font-semibold text-gray-800">{getConvertedPrice(hotel.price)}</p>
                                         <p className="text-sm text-gray-500">{hotel.description}</p>
                                         <Link
                                             href={`hotels/${hotel.id}`}

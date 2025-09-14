@@ -11,7 +11,7 @@ type User = {
     id: number;
     name: string;
     email: string;
-    role: string; // "admin" | "user" or whatever you use
+    role: string;
 };
 
 type PageProps = {
@@ -30,7 +30,7 @@ const getNavItems = (isAdmin: boolean) => {
             },
             {
                 title: 'Bookings',
-                href: '/admin/bookings', // Assuming 'admin.bookings.index' is the correct route
+                href: '/admin/bookings',
                 icon: Bookmark,
             },
         ];
@@ -48,7 +48,7 @@ const getNavItems = (isAdmin: boolean) => {
 export function AppSidebar() {
     // Get the auth data from the shared props
     const { auth } = usePage<PageProps>().props;
-    const userIsAdmin = auth.user?.role === 'admin'; // Default to false if user is not logged in
+    const userIsAdmin = auth.user?.role === 'admin';
 
     // Get the navigation items based on the user's role
     const mainNavItems = getNavItems(userIsAdmin);
