@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard\Admin;
 
 use App\Models\Hotel;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,7 +14,7 @@ class HotelController extends Controller
     public function index()
     {
         $hotels = Hotel::all();
-        return Inertia::render('admin/dashboard', [
+        return Inertia::render('dashboard/admin/hotels/index', [
             'hotels' => $hotels,
         ]);
     }
@@ -21,7 +22,7 @@ class HotelController extends Controller
     public function create()
     {
         $this->authorize('create', Hotel::class);
-        return Inertia::render('admin/hotels/create');
+        return Inertia::render('dashboard/admin/hotels/create');
     }
 
     public function store(Request $request)
@@ -43,7 +44,7 @@ class HotelController extends Controller
     public function edit(Hotel $hotel)
     {
         $this->authorize('update', $hotel);
-        return Inertia::render('admin/hotels/edit', ['hotel' => $hotel]);
+        return Inertia::render('dashboard/admin/hotels/edit', ['hotel' => $hotel]);
     }
 
     public function update(Request $request, Hotel $hotel)
@@ -59,7 +60,7 @@ class HotelController extends Controller
 
         $hotel->update($validated);
 
-        return redirect()->route('dashboard')->with('success', 'Hotel updated successfully.');
+        return redirect()->route('admin.hotels.index')->with('success', 'Hotel updated successfully.');
     }
 
     public function destroy(Hotel $hotel)
@@ -67,14 +68,7 @@ class HotelController extends Controller
         $this->authorize('delete', $hotel);
         $hotel->delete();
 
-        return redirect()->route('dashboard')->with('success', 'Hotel deleted successfully.');
+        return redirect()->route('admin.hotels.index')->with('success', 'Hotel deleted successfully.');
     }
 
-    public function publicIndex()
-    {
-        $hotels = Hotel::all();
-        return Inertia::render('frontend/hotels/index', [
-            'hotels' => $hotels,
-        ]);
-    }
 }

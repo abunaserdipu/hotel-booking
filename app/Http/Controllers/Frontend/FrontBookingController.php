@@ -1,31 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Frontend;
 
 use App\Mail\BookingConfirmationMail;
+use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Hotel;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
-class BookingController extends Controller
+class FrontBookingController extends Controller
 {
-    use AuthorizesRequests;
-    public function index()
-    {
-        $this->authorize('viewAny', Booking::class);
-
-        // Eager load the related hotel to avoid N+1 query problems
-        $bookings = Booking::with('hotel')->latest()->get();
-
-        return Inertia::render('admin/bookings/index', [
-            'bookings' => $bookings,
-        ]);
-    }
-
     public function store(Request $request, Hotel $hotel)
     {
         $validatedData = $request->validate([
@@ -39,7 +26,7 @@ class BookingController extends Controller
             'guest_name' => $validatedData['guest_name'],
             'guest_email' => $validatedData['guest_email'],
             'phone_number' => $validatedData['phone_number'],
-            'user_id' => auth()->id(), // will be NULL if guest, user ID if logged in
+            'user_id' => auth()->id(), // will be NULL if guest, user_id if logged in
         ]);
 
         Mail::to($booking->guest_email)->send(new BookingConfirmationMail($booking));
@@ -50,16 +37,8 @@ class BookingController extends Controller
     public function show($reference)
     {
         $booking = Booking::with('hotel')->where('booking_reference', $reference)->firstOrFail();
-        return Inertia::render('bookingDetails', [
+        return Inertia::render('frontend/bookingDetails', [
             'booking' => $booking,
         ]);
-    }
-
-    public function destroy(Booking $booking)
-    {
-        $this->authorize('delete', $booking);
-        $booking->delete();
-
-        return redirect()->route('bookings')->with('success', 'Booking deleted successfully.');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Dashboard\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
@@ -15,7 +15,7 @@ class UserBookingController extends Controller
     {
         $bookings = Auth::user()->bookings()->with('hotel')->latest()->get();
 
-        return Inertia::render('user/bookings', [
+        return Inertia::render('dashboard/user/bookings', [
             'bookings' => $bookings,
         ]);
     }

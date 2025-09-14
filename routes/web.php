@@ -1,18 +1,20 @@
 <?php
 
-use App\Http\Controllers\BookingController;
-use App\Http\Controllers\HotelController;
-use App\Http\Controllers\SearchController;
-use App\Http\Controllers\User\UserBookingController;
+
+use App\Http\Controllers\Dashboard\Admin\BookingController;
+use App\Http\Controllers\Dashboard\Admin\HotelController;
+use App\Http\Controllers\Dashboard\User\UserBookingController;
+use App\Http\Controllers\Frontend\FrontBookingController;
+use App\Http\Controllers\Frontend\FrontHotelController;
+use App\Http\Controllers\Frontend\SearchController;
+
 use App\Models\Hotel;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-// Route::get('/', function () {
-//     return Inertia::render('welcome');
-// })->name('home');
+
 // Public routes for all users
-Route::get('/', [HotelController::class, 'publicIndex'])->name('home');
+Route::get('/', [FrontHotelController::class, 'index'])->name('home');
 
 Route::get('/hotels', [SearchController::class, 'search'])->name('hotels.index');
 Route::get('/hotels/{hotel}', function (Hotel $hotel) {
@@ -20,12 +22,13 @@ Route::get('/hotels/{hotel}', function (Hotel $hotel) {
         'hotel' => $hotel,
     ]);
 })->name('hotels.show');
-Route::post('/hotels/{hotel}/book', [BookingController::class, 'store'])->name('bookings.store');
-Route::get('/bookings/{reference}', [BookingController::class, 'show'])->name('booking.show');
+Route::post('/hotels/{hotel}/book', [FrontBookingController::class, 'store'])->name('bookings.store');
+Route::get('/bookings/{reference}', [FrontBookingController::class, 'show'])->name('booking.show');
+
 
 // User-specific routes
 Route::middleware(['auth'])->group(function () {
-    // This is the new dashboard for regular users
+    // This is the common dashboard
     Route::get('/dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
@@ -33,6 +36,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user/bookings', [UserBookingController::class, 'index'])->name('user.bookings.index');
     Route::delete('/user/bookings/{booking}', [UserBookingController::class, 'destroy'])->name('user.bookings.destroy');
 });
+
 
 // Admin-specific routes
 Route::middleware(['auth', 'can:isAdmin'])->group(function () {
